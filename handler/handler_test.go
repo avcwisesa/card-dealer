@@ -118,6 +118,25 @@ func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":4,\"shuffled\":true}", w.Body.String())
 }
 
+func (suite *HandlerTestSuite) TestOpenUnavailableDeckHandler() {
+	dealer := mocks.NewDealer()
+	dealer.On("OpenDeck", "5bde8679-2884-4eee-b572-38673b11c9bf").Return(nil)
+
+	handler := handler.New(dealer)
+	openDeckHandler := handler.OpenDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	req := httptest.NewRequest("POST", "/deck/5bde8679-2884-4eee-b572-38673b11c9bf", nil)
+	c.Request = req
+
+	openDeckHandler(c)
+
+	assert.Equal(suite.T(), 404, w.Code)
+	assert.Equal(suite.T(), "{\"error\":\"Deck not available\"}", w.Body.String())
+}
+
 func TestHandlerTestSuite(t *testing.T) {
 	suite.Run(t, new(HandlerTestSuite))
 }

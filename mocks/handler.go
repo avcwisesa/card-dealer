@@ -22,6 +22,12 @@ func (h *handlerMock) NewDeckHandler() func(c *gin.Context) {
 	}
 }
 
+func (h *handlerMock) OpenDeckHandler() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.String(http.StatusOK, "ok")
+	}
+}
+
 func NewMockHandler() handler.Handler {
 	return &handlerMock{}
 }

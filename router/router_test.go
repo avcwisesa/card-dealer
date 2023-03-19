@@ -42,6 +42,16 @@ func (suite *RouterTestSuite) TestNewDeckRoute() {
 	assert.Equal(suite.T(), "ok", w.Body.String())
 }
 
+func (suite *RouterTestSuite) TestOpenDeckRoute() {
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", "/deck/5bde8679-2884-4eee-b572-38673b11c9bf", nil)
+
+	suite.router.ServeHTTP(w, req)
+
+	assert.Equal(suite.T(), 200, w.Code)
+	assert.Equal(suite.T(), "ok", w.Body.String())
+}
+
 func TestRouterTestSuite(t *testing.T) {
 	suite.Run(t, new(RouterTestSuite))
 }

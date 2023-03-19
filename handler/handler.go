@@ -12,6 +12,7 @@ import (
 type Handler interface {
 	PingHandler() func(c *gin.Context)
 	NewDeckHandler() func(c *gin.Context)
+	OpenDeckHandler() func(c *gin.Context)
 }
 
 type handler struct {
@@ -45,6 +46,14 @@ func (h *handler) NewDeckHandler() func(c *gin.Context) {
 			"deck_id":   newDeck.GetID(),
 			"shuffled":  newDeck.IsShuffled(),
 			"remaining": newDeck.CardsRemaining(),
+		})
+	}
+}
+
+func (h *handler) OpenDeckHandler() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Deck not available",
 		})
 	}
 }

@@ -11,6 +11,7 @@ func New(h h.Handler) *gin.Engine {
 
 	router.GET("/ping", h.PingHandler())
 	router.POST("/deck", h.NewDeckHandler())
+	router.GET("/deck/:id", h.OpenDeckHandler())
 
 	return router
 }
