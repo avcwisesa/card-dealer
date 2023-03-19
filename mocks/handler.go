@@ -16,6 +16,12 @@ func (h *handlerMock) PingHandler() func(c *gin.Context) {
 	}
 }
 
+func (h *handlerMock) NewDeckHandler() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.String(http.StatusCreated, "ok")
+	}
+}
+
 func NewMockHandler() handler.Handler {
 	return &handlerMock{}
 }

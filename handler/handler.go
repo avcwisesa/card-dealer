@@ -8,6 +8,7 @@ import (
 
 type Handler interface {
 	PingHandler() func(c *gin.Context)
+	NewDeckHandler() func(c *gin.Context)
 }
 
 type handler struct{}
@@ -16,6 +17,14 @@ func (h *handler) PingHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": "ok",
+		})
+	}
+}
+
+func (h *handler) NewDeckHandler() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "unimplemented",
 		})
 	}
 }

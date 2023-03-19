@@ -31,6 +31,16 @@ func (suite *RouterTestSuite) TestPingRoute() {
 	assert.Equal(suite.T(), "pong", w.Body.String())
 }
 
+func (suite *RouterTestSuite) TestNewDeckRoute() {
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/deck", nil)
+
+	suite.router.ServeHTTP(w, req)
+
+	assert.Equal(suite.T(), 201, w.Code)
+	assert.Equal(suite.T(), "ok", w.Body.String())
+}
+
 func TestRouterTestSuite(t *testing.T) {
 	suite.Run(t, new(RouterTestSuite))
 }
