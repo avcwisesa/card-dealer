@@ -1,7 +1,8 @@
-package router
+package router_test
 
 import (
-	mocks "github.com/avcwisesa/card-dealer/mocks"
+	"github.com/avcwisesa/card-dealer/mocks"
+	"github.com/avcwisesa/card-dealer/router"
 
 	"net/http/httptest"
 	"testing"
@@ -18,7 +19,7 @@ type RouterTestSuite struct {
 
 func (suite *RouterTestSuite) SetupTest() {
 	mockHandler := mocks.NewMockHandler()
-	suite.router = New(mockHandler)
+	suite.router = router.New(mockHandler)
 }
 
 func (suite *RouterTestSuite) TestPingRoute() {
