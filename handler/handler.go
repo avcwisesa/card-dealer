@@ -4,6 +4,7 @@ import (
 	"github.com/avcwisesa/card-dealer/domain"
 
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,12 @@ func (h *handler) PingHandler() func(c *gin.Context) {
 
 func (h *handler) NewDeckHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		newDeck := h.dealer.CreateDeck()
+		isShuffled, err := strconv.ParseBool(c.Query("is_shuffled"))
+		if err != nil {
+			isShuffled = false
+		}
+
+		newDeck := h.dealer.CreateDeck(isShuffled)
 
 		c.JSON(http.StatusCreated, gin.H{
 			"deck_id":   newDeck.GetID(),

@@ -15,10 +15,19 @@ type DealerTestSuite struct {
 
 func (suite *DealerTestSuite) TestCreateDefaultDeck() {
 	dealer := domain.NewDealer()
-	deck := dealer.CreateDeck()
+	deck := dealer.CreateDeck(false)
 
 	assert.NotNil(suite.T(), deck.GetID())
 	assert.Equal(suite.T(), false, deck.IsShuffled())
+	assert.Equal(suite.T(), 52, deck.CardsRemaining())
+}
+
+func (suite *DealerTestSuite) TestCreateShuffledDeck() {
+	dealer := domain.NewDealer()
+	deck := dealer.CreateDeck(true)
+
+	assert.NotNil(suite.T(), deck.GetID())
+	assert.Equal(suite.T(), true, deck.IsShuffled())
 	assert.Equal(suite.T(), 52, deck.CardsRemaining())
 }
 

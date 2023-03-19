@@ -10,8 +10,8 @@ type MockDealer struct {
 	mock.Mock
 }
 
-func (d *MockDealer) CreateDeck() domain.Deck {
-	args := d.Called()
+func (d *MockDealer) CreateDeck(isShuffled bool) domain.Deck {
+	args := d.Called(isShuffled)
 	return args.Get(0).(domain.Deck)
 }
 

@@ -4,7 +4,9 @@ import (
 	"github.com/avcwisesa/card-dealer/handler"
 	"github.com/avcwisesa/card-dealer/mocks"
 
+	// "fmt"
 	"net/http/httptest"
+	// "net/url"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -35,7 +37,7 @@ func (suite *HandlerTestSuite) TestPingHandler() {
 	assert.Equal(suite.T(), "{\"status\":\"ok\"}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestNewDeckHandler() {
+func (suite *HandlerTestSuite) TestDefaultNewDeckHandler() {
 	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedRemaining := 52
 	expectedIsShuffled := false
@@ -46,7 +48,7 @@ func (suite *HandlerTestSuite) TestNewDeckHandler() {
 	)
 
 	dealer := mocks.NewDealer()
-	dealer.On("CreateDeck").Return(expectedDeck)
+	dealer.On("CreateDeck", false).Return(expectedDeck)
 
 	handler := handler.New(dealer)
 	newDeckHandler := handler.NewDeckHandler()
@@ -58,6 +60,34 @@ func (suite *HandlerTestSuite) TestNewDeckHandler() {
 
 	assert.Equal(suite.T(), 201, w.Code)
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":52,\"shuffled\":false}", w.Body.String())
+}
+
+func (suite *HandlerTestSuite) TestShuffledNewDeckHandler() {
+	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedRemaining := 52
+	expectedIsShuffled := true
+	expectedDeck := mocks.NewDeck(
+		expectedDeckID,
+		expectedIsShuffled,
+		expectedRemaining,
+	)
+
+	dealer := mocks.NewDealer()
+	dealer.On("CreateDeck", true).Return(expectedDeck)
+
+	handler := handler.New(dealer)
+	newDeckHandler := handler.NewDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	req := httptest.NewRequest("POST", "/deck?is_shuffled=true", nil)
+	c.Request = req
+
+	newDeckHandler(c)
+
+	assert.Equal(suite.T(), 201, w.Code)
+	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":52,\"shuffled\":true}", w.Body.String())
 }
 
 func TestHandlerTestSuite(t *testing.T) {

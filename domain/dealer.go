@@ -1,13 +1,13 @@
 package domain
 
 type Dealer interface {
-	CreateDeck() Deck
+	CreateDeck(isShuffled bool) Deck
 }
 
 type dealer struct{}
 
-func (d *dealer) CreateDeck() Deck {
-	return NewDeck(false, 52)
+func (d *dealer) CreateDeck(isShuffled bool) Deck {
+	return NewDeck(isShuffled, 52)
 }
 
 func NewDealer() Dealer {
