@@ -90,6 +90,34 @@ func (suite *HandlerTestSuite) TestShuffledNewDeckHandler() {
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":52,\"shuffled\":true}", w.Body.String())
 }
 
+func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
+	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedRemaining := 4
+	expectedIsShuffled := true
+	expectedDeck := mocks.NewDeck(
+		expectedDeckID,
+		expectedIsShuffled,
+		expectedRemaining,
+	)
+
+	dealer := mocks.NewDealer()
+	dealer.On("CreateCustomDeck", true, "KS,KD,KC,KH").Return(expectedDeck)
+
+	handler := handler.New(dealer)
+	newDeckHandler := handler.NewDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	req := httptest.NewRequest("POST", "/deck?is_shuffled=true&cards=KS,KD,KC,KH", nil)
+	c.Request = req
+
+	newDeckHandler(c)
+
+	assert.Equal(suite.T(), 201, w.Code)
+	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":4,\"shuffled\":true}", w.Body.String())
+}
+
 func TestHandlerTestSuite(t *testing.T) {
 	suite.Run(t, new(HandlerTestSuite))
 }

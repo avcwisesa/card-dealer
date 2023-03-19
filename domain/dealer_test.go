@@ -31,6 +31,15 @@ func (suite *DealerTestSuite) TestCreateShuffledDeck() {
 	assert.Equal(suite.T(), 52, deck.CardsRemaining())
 }
 
+func (suite *DealerTestSuite) TestCreateCustomDeck() {
+	dealer := domain.NewDealer()
+	deck := dealer.CreateCustomDeck(true, "KS,KD,KC,KH")
+
+	assert.NotNil(suite.T(), deck.GetID())
+	assert.Equal(suite.T(), true, deck.IsShuffled())
+	assert.Equal(suite.T(), 4, deck.CardsRemaining())
+}
+
 func TestDealerTestSuite(t *testing.T) {
 	suite.Run(t, new(DealerTestSuite))
 }

@@ -33,7 +33,13 @@ func (h *handler) NewDeckHandler() func(c *gin.Context) {
 			isShuffled = false
 		}
 
-		newDeck := h.dealer.CreateDeck(isShuffled)
+		var newDeck domain.Deck
+		cards := c.Query("cards")
+		if cards == "" {
+			newDeck = h.dealer.CreateDeck(isShuffled)
+		} else {
+			newDeck = h.dealer.CreateCustomDeck(isShuffled, cards)
+		}
 
 		c.JSON(http.StatusCreated, gin.H{
 			"deck_id":   newDeck.GetID(),
