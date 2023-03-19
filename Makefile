@@ -1,5 +1,8 @@
 run:
 	go run main.go
 
-test:
+test: format
 	go test ./...
+
+format:
+	go fmt ./...

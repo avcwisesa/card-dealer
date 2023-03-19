@@ -2,22 +2,21 @@ package handler
 
 import (
 	"net/http/httptest"
-    "testing"
+	"testing"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/suite"
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type HandlerTestSuite struct {
-    suite.Suite
+	suite.Suite
 	handler Handler
 }
 
 func (suite *HandlerTestSuite) SetupTest() {
 	suite.handler = New()
 }
-
 
 func (suite *HandlerTestSuite) TestPingHandler() {
 	pingHandler := suite.handler.PingHandler()
@@ -32,5 +31,5 @@ func (suite *HandlerTestSuite) TestPingHandler() {
 }
 
 func TestHandlerTestSuite(t *testing.T) {
-    suite.Run(t, new(HandlerTestSuite))
+	suite.Run(t, new(HandlerTestSuite))
 }

@@ -4,23 +4,22 @@ import (
 	mocks "github.com/avcwisesa/card-dealer/mocks"
 
 	"net/http/httptest"
-    "testing"
+	"testing"
 
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/suite"
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type RouterTestSuite struct {
-    suite.Suite
-    router *gin.Engine
+	suite.Suite
+	router *gin.Engine
 }
 
 func (suite *RouterTestSuite) SetupTest() {
 	mockHandler := mocks.NewMockHandler()
 	suite.router = New(mockHandler)
 }
-
 
 func (suite *RouterTestSuite) TestPingRoute() {
 	w := httptest.NewRecorder()
@@ -33,5 +32,5 @@ func (suite *RouterTestSuite) TestPingRoute() {
 }
 
 func TestRouterTestSuite(t *testing.T) {
-    suite.Run(t, new(RouterTestSuite))
+	suite.Run(t, new(RouterTestSuite))
 }
