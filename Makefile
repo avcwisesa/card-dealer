@@ -1,4 +1,7 @@
-run:
+run: build
+	bin/card-dealer
+
+dev:
 	go run main.go
 
 test: format
@@ -7,3 +10,6 @@ test: format
 
 format:
 	go fmt ./...
+
+build:
+	go build -o bin/card-dealer

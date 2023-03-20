@@ -10,15 +10,23 @@ This application is a REST API which serves the following features:
 - [make](https://cmake.org/install/)
 - go 1.20
 
-## Running Application
-```
+## Build & Run
+```bash
 make run
 ```
 
 ## Running Test
-```
+```bash
 make test
 ```
+
+## Running Development Server
+```bash
+make dev
+```
+
+## Limitations
+This API currently defaults to port 8080 in localhost and only uses in-memory storage. So I hope you always finish your card game in one sitting :D Have fun!
 
 ## Documentation
 
