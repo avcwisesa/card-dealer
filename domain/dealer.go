@@ -1,7 +1,6 @@
 package domain
 
 import (
-	// "fmt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -66,7 +65,6 @@ func (d *dealer) DrawFromDeck(id string, count int) []Card {
 	}
 
 	cardsRemaining := deck.CardsRemaining()
-	// fmt.Println(cardsRemaining)
 
 	var cardsDrawed []Card
 	if len(cardsRemaining) < count {
@@ -76,7 +74,6 @@ func (d *dealer) DrawFromDeck(id string, count int) []Card {
 		cardsDrawed = cardsRemaining[0:count]
 		deck.SetCards(cardsRemaining[count:len(cardsRemaining)])
 	}
-	// fmt.Println(cardsDrawed)
 
 	d.store.AddOrUpdate(deck)
 
