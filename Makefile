@@ -2,7 +2,8 @@ run:
 	go run main.go
 
 test: format
-	go test ./...
+	@./scripts/coverage.sh
+	go tool cover -html=coverage.out -o coverage.html
 
 format:
 	go fmt ./...
