@@ -13,6 +13,7 @@ type Handler interface {
 	PingHandler() func(c *gin.Context)
 	NewDeckHandler() func(c *gin.Context)
 	OpenDeckHandler() func(c *gin.Context)
+	DrawFromDeckHandler() func(c *gin.Context)
 }
 
 type handler struct {
@@ -67,6 +68,14 @@ func (h *handler) OpenDeckHandler() func(c *gin.Context) {
 			"shuffled":  deck.IsShuffled(),
 			"remaining": deck.CardsRemainingCount(),
 			"cards":     domain.PresentPokerDeck(deck),
+		})
+	}
+}
+
+func (h *handler) DrawFromDeckHandler() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Deck not available",
 		})
 	}
 }

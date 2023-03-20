@@ -167,6 +167,27 @@ func (suite *HandlerTestSuite) TestOpenDeckHandler() {
 	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AH\",\"suite\":\"HEARTS\",\"value\":\"ACE\"},{\"code\":\"7C\",\"suite\":\"CLUBS\",\"value\":\"7\"}],\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":2,\"shuffled\":false}", w.Body.String())
 }
 
+func (suite *HandlerTestSuite) TestDrawFromUnavailableDeckHandler() {
+	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedCard := domain.Card{Content: "test"}
+
+	dealer := mocks.NewDealer()
+	dealer.On("DrawFromDeck", deckID, 1).Return(expectedCard)
+
+	handler := handler.New(dealer)
+	drawFromDeck := handler.DrawFromDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	c.Params = []gin.Param{gin.Param{Key: "id", Value: deckID}}
+
+	drawFromDeck(c)
+
+	assert.Equal(suite.T(), 404, w.Code)
+	assert.Equal(suite.T(), "{\"error\":\"Deck not available\"}", w.Body.String())
+}
+
 func TestHandlerTestSuite(t *testing.T) {
 	suite.Run(t, new(HandlerTestSuite))
 }
