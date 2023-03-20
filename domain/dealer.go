@@ -32,7 +32,10 @@ func (d *dealer) CreateCustomDeck(isShuffled bool, cardsString string) Deck {
 		cards = append(cards, Card{Content: content})
 	}
 
-	return NewDeck(isShuffled, cards)
+	deck := NewDeck(isShuffled, cards)
+	d.store.AddOrUpdate(deck)
+
+	return deck
 }
 
 func (d *dealer) GetDeck(id string) Deck {
