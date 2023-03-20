@@ -22,15 +22,6 @@ func (suite *DealerTestSuite) TestCreateDefaultDeck() {
 	assert.Equal(suite.T(), 52, deck.CardsRemainingCount())
 }
 
-func (suite *DealerTestSuite) TestCreateShuffledDeck() {
-	dealer := domain.NewDealer()
-	deck := dealer.CreateDeck(true)
-
-	assert.NotNil(suite.T(), deck.GetID())
-	assert.Equal(suite.T(), true, deck.IsShuffled())
-	assert.Equal(suite.T(), 52, deck.CardsRemainingCount())
-}
-
 func (suite *DealerTestSuite) TestCreateCustomDeck() {
 	dealer := domain.NewDealer()
 	deck := dealer.CreateCustomDeck(true, "KS,KD,KC,KH")
@@ -38,6 +29,22 @@ func (suite *DealerTestSuite) TestCreateCustomDeck() {
 	assert.NotNil(suite.T(), deck.GetID())
 	assert.Equal(suite.T(), true, deck.IsShuffled())
 	assert.Equal(suite.T(), 4, deck.CardsRemainingCount())
+}
+
+func (suite *DealerTestSuite) TestCreateShuffledDeck() {
+	dealer := domain.NewDealer()
+	deck := dealer.CreateCustomDeck(true, "KS,KD,KC,KH")
+
+	baseCardOrder := []string{"KS", "KD", "KC", "KH"}
+
+	cards := deck.CardsRemaining()
+	currentCardOrder := []string{}
+	for _, card := range cards {
+		currentCardOrder = append(currentCardOrder, card.Content)
+	}
+
+	assert.ElementsMatch(suite.T(), baseCardOrder, currentCardOrder)
+	assert.NotEqualValues(suite.T(), baseCardOrder, currentCardOrder)
 }
 
 func (suite *DealerTestSuite) TestGetCreatedCustomDeck() {

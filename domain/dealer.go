@@ -1,8 +1,10 @@
 package domain
 
 import (
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Dealer interface {
@@ -19,7 +21,12 @@ type dealer struct {
 type cardPresentation map[string]string
 
 func (d *dealer) CreateDeck(isShuffled bool) Deck {
-	deck := NewDeck(isShuffled, generateStandardPokerDeck())
+	cards := generateStandardPokerDeck()
+
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
+
+	deck := NewDeck(isShuffled, cards)
 	d.store.AddOrUpdate(deck)
 
 	return deck
@@ -31,6 +38,8 @@ func (d *dealer) CreateCustomDeck(isShuffled bool, cardsString string) Deck {
 	for _, content := range cardContents {
 		cards = append(cards, Card{Content: content})
 	}
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
 
 	deck := NewDeck(isShuffled, cards)
 	d.store.AddOrUpdate(deck)
