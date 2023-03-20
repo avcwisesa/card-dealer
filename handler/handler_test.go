@@ -24,7 +24,7 @@ func (suite *HandlerTestSuite) SetupTest() {
 	suite.handler = handler.New(dealer)
 }
 
-func (suite *HandlerTestSuite) TestPingHandler() {
+func (suite *HandlerTestSuite) TestPing() {
 	pingHandler := suite.handler.PingHandler()
 
 	w := httptest.NewRecorder()
@@ -36,7 +36,7 @@ func (suite *HandlerTestSuite) TestPingHandler() {
 	assert.Equal(suite.T(), "{\"status\":\"ok\"}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestDefaultNewDeckHandler() {
+func (suite *HandlerTestSuite) TestDefaultNewDeck() {
 	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedRemaining := 52
 	expectedIsShuffled := false
@@ -62,7 +62,7 @@ func (suite *HandlerTestSuite) TestDefaultNewDeckHandler() {
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":52,\"shuffled\":false}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestShuffledNewDeckHandler() {
+func (suite *HandlerTestSuite) TestShuffledNewDeck() {
 	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedRemaining := 52
 	expectedIsShuffled := true
@@ -91,7 +91,7 @@ func (suite *HandlerTestSuite) TestShuffledNewDeckHandler() {
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":52,\"shuffled\":true}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
+func (suite *HandlerTestSuite) TestNewCustomDeck() {
 	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedRemaining := 4
 	expectedIsShuffled := true
@@ -120,7 +120,7 @@ func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
 	assert.Equal(suite.T(), "{\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":4,\"shuffled\":true}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestOpenUnavailableDeckHandler() {
+func (suite *HandlerTestSuite) TestOpenUnavailableDeck() {
 	dealer := mocks.NewDealer()
 	dealer.On("GetDeck", "5bde8679-2884-4eee-b572-38673b11c9bf").Return(nil)
 
@@ -138,7 +138,7 @@ func (suite *HandlerTestSuite) TestOpenUnavailableDeckHandler() {
 	assert.Equal(suite.T(), "{\"error\":\"Deck not available\"}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestOpenDeckHandler() {
+func (suite *HandlerTestSuite) TestOpenDeck() {
 	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedDeck := mocks.NewCustomDeck(
 		expectedDeckID,
@@ -167,7 +167,7 @@ func (suite *HandlerTestSuite) TestOpenDeckHandler() {
 	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AH\",\"suite\":\"HEARTS\",\"value\":\"ACE\"},{\"code\":\"7C\",\"suite\":\"CLUBS\",\"value\":\"7\"}],\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":2,\"shuffled\":false}", w.Body.String())
 }
 
-func (suite *HandlerTestSuite) TestDrawFromUnavailableDeckHandler() {
+func (suite *HandlerTestSuite) TestDrawFromUnavailableDeck() {
 	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 	expectedCard := domain.Card{Content: "test"}
 
