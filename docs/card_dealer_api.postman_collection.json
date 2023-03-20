@@ -1,0 +1,493 @@
+{
+	"info": {
+		"_postman_id": "136cee12-30ef-4781-abe7-ca7039537d2a",
+		"name": "Card Dealer API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3562144"
+	},
+	"item": [
+		{
+			"name": "Create New Deck",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "is_shuffled",
+							"value": "true",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/deck",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deck"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Custom Deck",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck?is_shuffled=false&cards=AS,KH",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck"
+							],
+							"query": [
+								{
+									"key": "is_shuffled",
+									"value": "false"
+								},
+								{
+									"key": "cards",
+									"value": "AS,KH"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:31:03 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "81"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"deck_id\": \"03291c81-6f49-485d-9d88-03af965d0b26\",\n    \"remaining\": 2,\n    \"shuffled\": false\n}"
+				},
+				{
+					"name": "Create Default Deck",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck?is_shuffled=false",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck"
+							],
+							"query": [
+								{
+									"key": "is_shuffled",
+									"value": "false"
+								},
+								{
+									"key": "cards",
+									"value": "AS,KH",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:32:47 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "82"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"deck_id\": \"d13d1333-658a-4123-b8ae-a94b2d353149\",\n    \"remaining\": 52,\n    \"shuffled\": false\n}"
+				},
+				{
+					"name": "Create Shuffled Custom Deck",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck?is_shuffled=true&cards=AS,AD,AC,AH",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck"
+							],
+							"query": [
+								{
+									"key": "is_shuffled",
+									"value": "true"
+								},
+								{
+									"key": "cards",
+									"value": "AS,AD,AC,AH"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 12:07:24 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "80"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"deck_id\": \"662ed326-69e7-4b55-9827-3a186f1e7435\",\n    \"remaining\": 4,\n    \"shuffled\": true\n}"
+				},
+				{
+					"name": "Create Shuffled Deck",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck?is_shuffled=true",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck"
+							],
+							"query": [
+								{
+									"key": "is_shuffled",
+									"value": "true"
+								},
+								{
+									"key": "cards",
+									"value": "AS,AD,AC,AH",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 13:14:47 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "81"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"deck_id\": \"7d904f2f-93da-4096-8017-b2e5851bbb5c\",\n    \"remaining\": 52,\n    \"shuffled\": true\n}"
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Open Deck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/deck/5bde8679-2884-4eee-b572-38673b11c9bf",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deck",
+						"5bde8679-2884-4eee-b572-38673b11c9bf"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Open Default Deck",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/d13d1333-658a-4123-b8ae-a94b2d353149",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"d13d1333-658a-4123-b8ae-a94b2d353149"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:33:18 GMT"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"cards\": [\n        {\n            \"code\": \"AS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"2S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"2\"\n        },\n        {\n            \"code\": \"3S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"3\"\n        },\n        {\n            \"code\": \"4S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"4\"\n        },\n        {\n            \"code\": \"5S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"5\"\n        },\n        {\n            \"code\": \"6S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"6\"\n        },\n        {\n            \"code\": \"7S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"7\"\n        },\n        {\n            \"code\": \"8S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"8\"\n        },\n        {\n            \"code\": \"9S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"9\"\n        },\n        {\n            \"code\": \"10S\",\n            \"suite\": \"SPADES\",\n            \"value\": \"10\"\n        },\n        {\n            \"code\": \"JS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"JACK\"\n        },\n        {\n            \"code\": \"QS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"QUEEN\"\n        },\n        {\n            \"code\": \"KS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"KING\"\n        },\n        {\n            \"code\": \"AD\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"2D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"2\"\n        },\n        {\n            \"code\": \"3D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"3\"\n        },\n        {\n            \"code\": \"4D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"4\"\n        },\n        {\n            \"code\": \"5D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"5\"\n        },\n        {\n            \"code\": \"6D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"6\"\n        },\n        {\n            \"code\": \"7D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"7\"\n        },\n        {\n            \"code\": \"8D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"8\"\n        },\n        {\n            \"code\": \"9D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"9\"\n        },\n        {\n            \"code\": \"10D\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"10\"\n        },\n        {\n            \"code\": \"JD\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"JACK\"\n        },\n        {\n            \"code\": \"QD\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"QUEEN\"\n        },\n        {\n            \"code\": \"KD\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"KING\"\n        },\n        {\n            \"code\": \"AC\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"2C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"2\"\n        },\n        {\n            \"code\": \"3C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"3\"\n        },\n        {\n            \"code\": \"4C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"4\"\n        },\n        {\n            \"code\": \"5C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"5\"\n        },\n        {\n            \"code\": \"6C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"6\"\n        },\n        {\n            \"code\": \"7C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"7\"\n        },\n        {\n            \"code\": \"8C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"8\"\n        },\n        {\n            \"code\": \"9C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"9\"\n        },\n        {\n            \"code\": \"10C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"10\"\n        },\n        {\n            \"code\": \"JC\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"JACK\"\n        },\n        {\n            \"code\": \"QC\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"QUEEN\"\n        },\n        {\n            \"code\": \"KC\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"KING\"\n        },\n        {\n            \"code\": \"AH\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"2H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"2\"\n        },\n        {\n            \"code\": \"3H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"3\"\n        },\n        {\n            \"code\": \"4H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"4\"\n        },\n        {\n            \"code\": \"5H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"5\"\n        },\n        {\n            \"code\": \"6H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"6\"\n        },\n        {\n            \"code\": \"7H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"7\"\n        },\n        {\n            \"code\": \"8H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"8\"\n        },\n        {\n            \"code\": \"9H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"9\"\n        },\n        {\n            \"code\": \"10H\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"10\"\n        },\n        {\n            \"code\": \"JH\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"JACK\"\n        },\n        {\n            \"code\": \"QH\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"QUEEN\"\n        },\n        {\n            \"code\": \"KH\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"KING\"\n        }\n    ],\n    \"deck_id\": \"d13d1333-658a-4123-b8ae-a94b2d353149\",\n    \"remaining\": 52,\n    \"shuffled\": false\n}"
+				},
+				{
+					"name": "Open Unavailable Deck",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/d13d1333-658a-4123-b8ae-a94b2d353140",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"d13d1333-658a-4123-b8ae-a94b2d353140"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:34:04 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "30"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Deck not available\"\n}"
+				},
+				{
+					"name": "Open Shuffled Custom Deck",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/662ed326-69e7-4b55-9827-3a186f1e7435",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"662ed326-69e7-4b55-9827-3a186f1e7435"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 12:08:02 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "271"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"cards\": [\n        {\n            \"code\": \"AC\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"AS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"AH\",\n            \"suite\": \"HEARTS\",\n            \"value\": \"ACE\"\n        },\n        {\n            \"code\": \"AD\",\n            \"suite\": \"DIAMONDS\",\n            \"value\": \"ACE\"\n        }\n    ],\n    \"deck_id\": \"662ed326-69e7-4b55-9827-3a186f1e7435\",\n    \"remaining\": 4,\n    \"shuffled\": true\n}"
+				}
+			]
+		},
+		{
+			"name": "Draw Card",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": [
+				{
+					"name": "Draw Unavailable",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/d13d1333-658a-4123-b8ae-a94b2d353149/draw",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"d13d1333-658a-4123-b8ae-a94b2d353149",
+								"draw"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:35:09 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Deck not available or ran out of cards\"\n}"
+				},
+				{
+					"name": "Draw 1 Card From Default Deck",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/74ccb753-97a5-49b6-9af1-f771c8c3a5e8/draw",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"74ccb753-97a5-49b6-9af1-f771c8c3a5e8",
+								"draw"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 11:42:09 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"cards\": [\n        {\n            \"code\": \"AS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"ACE\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "Draw Multiple Cards",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/deck/7d904f2f-93da-4096-8017-b2e5851bbb5c/draw?count=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deck",
+								"7d904f2f-93da-4096-8017-b2e5851bbb5c",
+								"draw"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Mar 2023 13:15:39 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "101"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"cards\": [\n        {\n            \"code\": \"KS\",\n            \"suite\": \"SPADES\",\n            \"value\": \"KING\"\n        },\n        {\n            \"code\": \"10C\",\n            \"suite\": \"CLUBS\",\n            \"value\": \"10\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	]
+}
