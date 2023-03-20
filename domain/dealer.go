@@ -1,6 +1,7 @@
 package domain
 
 import (
+	// "fmt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -11,7 +12,7 @@ type Dealer interface {
 	CreateDeck(isShuffled bool) Deck
 	CreateCustomDeck(isShuffled bool, cardsString string) Deck
 	GetDeck(id string) Deck
-	DrawFromDeck(id string) Card
+	DrawFromDeck(id string, count int) []Card
 }
 
 type dealer struct {
@@ -23,8 +24,10 @@ type cardPresentation map[string]string
 func (d *dealer) CreateDeck(isShuffled bool) Deck {
 	cards := generateStandardPokerDeck()
 
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
+	if isShuffled {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
+	}
 
 	deck := NewDeck(isShuffled, cards)
 	d.store.AddOrUpdate(deck)
@@ -35,11 +38,16 @@ func (d *dealer) CreateDeck(isShuffled bool) Deck {
 func (d *dealer) CreateCustomDeck(isShuffled bool, cardsString string) Deck {
 	cardContents := strings.Split(cardsString, ",")
 	cards := []Card{}
-	for _, content := range cardContents {
-		cards = append(cards, Card{Content: content})
+	if cardsString != "" {
+		for _, content := range cardContents {
+			cards = append(cards, Card{Content: content})
+		}
 	}
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
+
+	if isShuffled {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(cards), func(i, j int) { cards[i], cards[j] = cards[j], cards[i] })
+	}
 
 	deck := NewDeck(isShuffled, cards)
 	d.store.AddOrUpdate(deck)
@@ -51,8 +59,28 @@ func (d *dealer) GetDeck(id string) Deck {
 	return d.store.Get(id)
 }
 
-func (d *dealer) DrawFromDeck(id string) Card {
-	return Card{Content: "AS"}
+func (d *dealer) DrawFromDeck(id string, count int) []Card {
+	deck := d.store.Get(id)
+	if deck == nil {
+		return []Card{}
+	}
+
+	cardsRemaining := deck.CardsRemaining()
+	// fmt.Println(cardsRemaining)
+
+	var cardsDrawed []Card
+	if len(cardsRemaining) < count {
+		cardsDrawed = cardsRemaining
+		deck.SetCards([]Card{})
+	} else {
+		cardsDrawed = cardsRemaining[0:count]
+		deck.SetCards(cardsRemaining[count:len(cardsRemaining)])
+	}
+	// fmt.Println(cardsDrawed)
+
+	d.store.AddOrUpdate(deck)
+
+	return cardsDrawed
 }
 
 func generateStandardPokerDeck() []Card {

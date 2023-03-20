@@ -76,8 +76,23 @@ func (h *handler) DrawFromDeckHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		deckID := c.Param("id")
 
-		card := h.dealer.DrawFromDeck(deckID)
-		if card.IsEmpty() {
+		var count int
+		var err error
+		countString := c.Query("count")
+		if countString != "" {
+			count, err = strconv.Atoi(countString)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+		} else {
+			count = 1
+		}
+
+		cards := h.dealer.DrawFromDeck(deckID, count)
+		if len(cards) == 0 {
 			c.JSON(http.StatusNotFound, gin.H{
 				"error": "Deck not available or ran out of cards",
 			})
@@ -85,7 +100,7 @@ func (h *handler) DrawFromDeckHandler() func(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"cards": domain.PresentPokerCards([]domain.Card{card}),
+			"cards": domain.PresentPokerCards(cards),
 		})
 	}
 }

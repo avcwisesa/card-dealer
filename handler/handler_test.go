@@ -171,7 +171,7 @@ func (suite *HandlerTestSuite) TestDrawFromUnavailableDeck() {
 	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
 
 	dealer := mocks.NewDealer()
-	dealer.On("DrawFromDeck", deckID).Return(domain.Card{Content: ""})
+	dealer.On("DrawFromDeck", deckID, 1).Return([]domain.Card{})
 
 	handler := handler.New(dealer)
 	drawFromDeck := handler.DrawFromDeckHandler()
@@ -192,7 +192,7 @@ func (suite *HandlerTestSuite) TestDrawOneCardFromDeck() {
 	expectedCard := domain.Card{Content: "AS"}
 
 	dealer := mocks.NewDealer()
-	dealer.On("DrawFromDeck", deckID).Return(expectedCard)
+	dealer.On("DrawFromDeck", deckID, 1).Return([]domain.Card{expectedCard})
 
 	handler := handler.New(dealer)
 	drawFromDeck := handler.DrawFromDeckHandler()
@@ -206,6 +206,33 @@ func (suite *HandlerTestSuite) TestDrawOneCardFromDeck() {
 
 	assert.Equal(suite.T(), 200, w.Code)
 	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AS\",\"suite\":\"SPADES\",\"value\":\"ACE\"}]}", w.Body.String())
+}
+
+func (suite *HandlerTestSuite) TestDrawMultipleCardFromDeck() {
+	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedCards := []domain.Card{
+		domain.Card{Content: "AS"},
+		domain.Card{Content: "2S"},
+	}
+
+	dealer := mocks.NewDealer()
+	dealer.On("DrawFromDeck", deckID, 2).Return(expectedCards)
+
+	handler := handler.New(dealer)
+	drawFromDeck := handler.DrawFromDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	c.Params = []gin.Param{gin.Param{Key: "id", Value: deckID}}
+
+	req := httptest.NewRequest("POST", "/deck/5bde8679-2884-4eee-b572-38673b11c9bf/draw?count=2", nil)
+	c.Request = req
+
+	drawFromDeck(c)
+
+	assert.Equal(suite.T(), 200, w.Code)
+	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AS\",\"suite\":\"SPADES\",\"value\":\"ACE\"},{\"code\":\"2S\",\"suite\":\"SPADES\",\"value\":\"2\"}]}", w.Body.String())
 }
 
 func TestHandlerTestSuite(t *testing.T) {

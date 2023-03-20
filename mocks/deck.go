@@ -31,6 +31,10 @@ func (d *MockDeck) CardsRemaining() []domain.Card {
 	return d.cards
 }
 
+func (d *MockDeck) SetCards(cards []domain.Card) {
+	d.Called(cards)
+}
+
 func NewDeck(id string, isShuffled bool, remaining int) *MockDeck {
 	return &MockDeck{
 		deckID:     id,

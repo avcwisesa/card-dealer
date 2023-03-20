@@ -7,6 +7,7 @@ type Deck interface {
 	IsShuffled() bool
 	CardsRemainingCount() int
 	CardsRemaining() []Card
+	SetCards(cards []Card)
 }
 
 type deck struct {
@@ -29,6 +30,11 @@ func (d *deck) CardsRemainingCount() int {
 
 func (d *deck) CardsRemaining() []Card {
 	return d.cards
+}
+
+func (d *deck) SetCards(cards []Card) {
+	d.cards = cards
+	return
 }
 
 func NewDeck(isShuffled bool, cards []Card) *deck {

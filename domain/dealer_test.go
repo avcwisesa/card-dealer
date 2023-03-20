@@ -62,9 +62,51 @@ func (suite *DealerTestSuite) TestDrawFromDeck() {
 	dealer := domain.NewDealer()
 
 	deck := dealer.CreateDeck(false)
-	card := dealer.DrawFromDeck(deck.GetID())
+	card := dealer.DrawFromDeck(deck.GetID(), 1)[0]
 
 	assert.Equal(suite.T(), "AS", card.Content)
+}
+
+func (suite *DealerTestSuite) TestDrawMultipleFromDeck() {
+	dealer := domain.NewDealer()
+
+	deck := dealer.CreateDeck(false)
+	cards := dealer.DrawFromDeck(deck.GetID(), 3)
+
+	assert.Equal(suite.T(), "AS", cards[0].Content)
+	assert.Equal(suite.T(), "2S", cards[1].Content)
+	assert.Equal(suite.T(), "3S", cards[2].Content)
+}
+
+func (suite *DealerTestSuite) TestDrawFromEmptyDeck() {
+	dealer := domain.NewDealer()
+
+	deck := dealer.CreateCustomDeck(false, "")
+	cards := dealer.DrawFromDeck(deck.GetID(), 1)
+
+	assert.Equal(suite.T(), 0, len(cards))
+}
+
+func (suite *DealerTestSuite) TestDrawTwoFromOneCardDeck() {
+	dealer := domain.NewDealer()
+
+	deck := dealer.CreateCustomDeck(false, "2S")
+	cards := dealer.DrawFromDeck(deck.GetID(), 2)
+
+	assert.Equal(suite.T(), len(cards), 1)
+	assert.Equal(suite.T(), "2S", cards[0].Content)
+}
+
+func (suite *DealerTestSuite) TestDrawTwiceFromDeck() {
+	dealer := domain.NewDealer()
+
+	deck := dealer.CreateDeck(false)
+
+	cards := dealer.DrawFromDeck(deck.GetID(), 1)
+	assert.Equal(suite.T(), "AS", cards[0].Content)
+
+	cards = dealer.DrawFromDeck(deck.GetID(), 1)
+	assert.Equal(suite.T(), "2S", cards[0].Content)
 }
 
 func TestDealerTestSuite(t *testing.T) {
