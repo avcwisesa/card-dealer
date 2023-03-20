@@ -67,15 +67,25 @@ func (h *handler) OpenDeckHandler() func(c *gin.Context) {
 			"deck_id":   deck.GetID(),
 			"shuffled":  deck.IsShuffled(),
 			"remaining": deck.CardsRemainingCount(),
-			"cards":     domain.PresentPokerDeck(deck),
+			"cards":     domain.PresentPokerCards(deck.CardsRemaining()),
 		})
 	}
 }
 
 func (h *handler) DrawFromDeckHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Deck not available",
+		deckID := c.Param("id")
+
+		card := h.dealer.DrawFromDeck(deckID)
+		if card.IsEmpty() {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "Deck not available or ran out of cards",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"cards": domain.PresentPokerCards([]domain.Card{card}),
 		})
 	}
 }

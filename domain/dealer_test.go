@@ -40,6 +40,15 @@ func (suite *DealerTestSuite) TestCreateCustomDeck() {
 	assert.Equal(suite.T(), 4, deck.CardsRemainingCount())
 }
 
+func (suite *DealerTestSuite) TestDrawFromDeck() {
+	dealer := domain.NewDealer()
+
+	deck := dealer.CreateDeck(false)
+	card := dealer.DrawFromDeck(deck.GetID())
+
+	assert.Equal(suite.T(), "AS", card.Content)
+}
+
 func TestDealerTestSuite(t *testing.T) {
 	suite.Run(t, new(DealerTestSuite))
 }

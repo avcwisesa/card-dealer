@@ -9,6 +9,7 @@ type Dealer interface {
 	CreateDeck(isShuffled bool) Deck
 	CreateCustomDeck(isShuffled bool, cardsString string) Deck
 	GetDeck(id string) Deck
+	DrawFromDeck(id string) Card
 }
 
 type dealer struct {
@@ -38,6 +39,10 @@ func (d *dealer) GetDeck(id string) Deck {
 	return d.store.Get(id)
 }
 
+func (d *dealer) DrawFromDeck(id string) Card {
+	return Card{Content: "AS"}
+}
+
 func generateStandardPokerDeck() []Card {
 	cards := []Card{}
 	suites := []string{"S", "D", "C", "H"}
@@ -53,7 +58,7 @@ func generateStandardPokerDeck() []Card {
 	return cards
 }
 
-func PresentPokerDeck(deck Deck) []cardPresentation {
+func PresentPokerCards(cards []Card) []cardPresentation {
 	deckPresentation := []cardPresentation{}
 
 	valueMapping := map[string]string{
@@ -74,7 +79,7 @@ func PresentPokerDeck(deck Deck) []cardPresentation {
 		"H": "HEARTS",
 	}
 
-	for _, card := range deck.CardsRemaining() {
+	for _, card := range cards {
 		value := card.Content[0 : len(card.Content)-1]
 		suite := card.Content[len(card.Content)-1 : len(card.Content)]
 

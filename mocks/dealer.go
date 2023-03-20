@@ -30,6 +30,11 @@ func (d *MockDealer) GetDeck(id string) domain.Deck {
 	}
 }
 
+func (d *MockDealer) DrawFromDeck(id string) domain.Card {
+	args := d.Called(id)
+	return args.Get(0).(domain.Card)
+}
+
 func NewDealer() *MockDealer {
 	return &MockDealer{}
 }

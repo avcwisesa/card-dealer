@@ -169,10 +169,9 @@ func (suite *HandlerTestSuite) TestOpenDeck() {
 
 func (suite *HandlerTestSuite) TestDrawFromUnavailableDeck() {
 	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
-	expectedCard := domain.Card{Content: "test"}
 
 	dealer := mocks.NewDealer()
-	dealer.On("DrawFromDeck", deckID, 1).Return(expectedCard)
+	dealer.On("DrawFromDeck", deckID).Return(domain.Card{Content: ""})
 
 	handler := handler.New(dealer)
 	drawFromDeck := handler.DrawFromDeckHandler()
@@ -185,7 +184,28 @@ func (suite *HandlerTestSuite) TestDrawFromUnavailableDeck() {
 	drawFromDeck(c)
 
 	assert.Equal(suite.T(), 404, w.Code)
-	assert.Equal(suite.T(), "{\"error\":\"Deck not available\"}", w.Body.String())
+	assert.Equal(suite.T(), "{\"error\":\"Deck not available or ran out of cards\"}", w.Body.String())
+}
+
+func (suite *HandlerTestSuite) TestDrawOneCardFromDeck() {
+	deckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedCard := domain.Card{Content: "AS"}
+
+	dealer := mocks.NewDealer()
+	dealer.On("DrawFromDeck", deckID).Return(expectedCard)
+
+	handler := handler.New(dealer)
+	drawFromDeck := handler.DrawFromDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	c.Params = []gin.Param{gin.Param{Key: "id", Value: deckID}}
+
+	drawFromDeck(c)
+
+	assert.Equal(suite.T(), 200, w.Code)
+	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AS\",\"suite\":\"SPADES\",\"value\":\"ACE\"}]}", w.Body.String())
 }
 
 func TestHandlerTestSuite(t *testing.T) {
