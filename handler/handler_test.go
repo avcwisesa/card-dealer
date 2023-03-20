@@ -1,12 +1,11 @@
 package handler_test
 
 import (
+	"github.com/avcwisesa/card-dealer/domain"
 	"github.com/avcwisesa/card-dealer/handler"
 	"github.com/avcwisesa/card-dealer/mocks"
 
-	// "fmt"
 	"net/http/httptest"
-	// "net/url"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +45,7 @@ func (suite *HandlerTestSuite) TestDefaultNewDeckHandler() {
 		expectedIsShuffled,
 		expectedRemaining,
 	)
+	expectedDeck.On("CardsRemainingCount").Return(52)
 
 	dealer := mocks.NewDealer()
 	dealer.On("CreateDeck", false).Return(expectedDeck)
@@ -71,6 +71,7 @@ func (suite *HandlerTestSuite) TestShuffledNewDeckHandler() {
 		expectedIsShuffled,
 		expectedRemaining,
 	)
+	expectedDeck.On("CardsRemainingCount").Return(52)
 
 	dealer := mocks.NewDealer()
 	dealer.On("CreateDeck", true).Return(expectedDeck)
@@ -99,6 +100,7 @@ func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
 		expectedIsShuffled,
 		expectedRemaining,
 	)
+	expectedDeck.On("CardsRemainingCount").Return(4)
 
 	dealer := mocks.NewDealer()
 	dealer.On("CreateCustomDeck", true, "KS,KD,KC,KH").Return(expectedDeck)
@@ -120,7 +122,7 @@ func (suite *HandlerTestSuite) TestNewCustomDeckHandler() {
 
 func (suite *HandlerTestSuite) TestOpenUnavailableDeckHandler() {
 	dealer := mocks.NewDealer()
-	dealer.On("OpenDeck", "5bde8679-2884-4eee-b572-38673b11c9bf").Return(nil)
+	dealer.On("GetDeck", "5bde8679-2884-4eee-b572-38673b11c9bf").Return(nil)
 
 	handler := handler.New(dealer)
 	openDeckHandler := handler.OpenDeckHandler()
@@ -128,13 +130,41 @@ func (suite *HandlerTestSuite) TestOpenUnavailableDeckHandler() {
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	req := httptest.NewRequest("POST", "/deck/5bde8679-2884-4eee-b572-38673b11c9bf", nil)
-	c.Request = req
+	c.Params = []gin.Param{gin.Param{Key: "id", Value: "5bde8679-2884-4eee-b572-38673b11c9bf"}}
 
 	openDeckHandler(c)
 
 	assert.Equal(suite.T(), 404, w.Code)
 	assert.Equal(suite.T(), "{\"error\":\"Deck not available\"}", w.Body.String())
+}
+
+func (suite *HandlerTestSuite) TestOpenDeckHandler() {
+	expectedDeckID := "5bde8679-2884-4eee-b572-38673b11c9bf"
+	expectedDeck := mocks.NewCustomDeck(
+		expectedDeckID,
+		false,
+		[]domain.Card{
+			domain.Card{Content: "AH"},
+			domain.Card{Content: "7C"},
+		},
+	)
+	expectedDeck.On("CardsRemainingCount").Return(2)
+
+	dealer := mocks.NewDealer()
+	dealer.On("GetDeck", expectedDeckID).Return(expectedDeck)
+
+	handler := handler.New(dealer)
+	openDeckHandler := handler.OpenDeckHandler()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	c.Params = []gin.Param{gin.Param{Key: "id", Value: expectedDeckID}}
+
+	openDeckHandler(c)
+
+	assert.Equal(suite.T(), 200, w.Code)
+	assert.Equal(suite.T(), "{\"cards\":[{\"code\":\"AH\",\"suite\":\"HEARTS\",\"value\":\"ACE\"},{\"code\":\"7C\",\"suite\":\"CLUBS\",\"value\":\"7\"}],\"deck_id\":\"5bde8679-2884-4eee-b572-38673b11c9bf\",\"remaining\":2,\"shuffled\":false}", w.Body.String())
 }
 
 func TestHandlerTestSuite(t *testing.T) {

@@ -5,31 +5,36 @@ import "github.com/google/uuid"
 type Deck interface {
 	GetID() string
 	IsShuffled() bool
-	CardsRemaining() int
+	CardsRemainingCount() int
+	CardsRemaining() []Card
 }
 
 type deck struct {
-	deckID     string
+	ID         string
 	isShuffled bool
-	remaining  int
+	cards      []Card
 }
 
 func (d *deck) GetID() string {
-	return d.deckID
+	return d.ID
 }
 
 func (d *deck) IsShuffled() bool {
 	return d.isShuffled
 }
 
-func (d *deck) CardsRemaining() int {
-	return d.remaining
+func (d *deck) CardsRemainingCount() int {
+	return len(d.cards)
 }
 
-func NewDeck(isShuffled bool, remaining int) Deck {
+func (d *deck) CardsRemaining() []Card {
+	return d.cards
+}
+
+func NewDeck(isShuffled bool, cards []Card) *deck {
 	return &deck{
-		deckID:     uuid.NewString(),
+		ID:         uuid.NewString(),
 		isShuffled: isShuffled,
-		remaining:  remaining,
+		cards:      cards,
 	}
 }

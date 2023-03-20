@@ -19,7 +19,7 @@ func (suite *DealerTestSuite) TestCreateDefaultDeck() {
 
 	assert.NotNil(suite.T(), deck.GetID())
 	assert.Equal(suite.T(), false, deck.IsShuffled())
-	assert.Equal(suite.T(), 52, deck.CardsRemaining())
+	assert.Equal(suite.T(), 52, deck.CardsRemainingCount())
 }
 
 func (suite *DealerTestSuite) TestCreateShuffledDeck() {
@@ -28,7 +28,7 @@ func (suite *DealerTestSuite) TestCreateShuffledDeck() {
 
 	assert.NotNil(suite.T(), deck.GetID())
 	assert.Equal(suite.T(), true, deck.IsShuffled())
-	assert.Equal(suite.T(), 52, deck.CardsRemaining())
+	assert.Equal(suite.T(), 52, deck.CardsRemainingCount())
 }
 
 func (suite *DealerTestSuite) TestCreateCustomDeck() {
@@ -37,7 +37,7 @@ func (suite *DealerTestSuite) TestCreateCustomDeck() {
 
 	assert.NotNil(suite.T(), deck.GetID())
 	assert.Equal(suite.T(), true, deck.IsShuffled())
-	assert.Equal(suite.T(), 4, deck.CardsRemaining())
+	assert.Equal(suite.T(), 4, deck.CardsRemainingCount())
 }
 
 func TestDealerTestSuite(t *testing.T) {

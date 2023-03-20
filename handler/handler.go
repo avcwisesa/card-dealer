@@ -45,15 +45,28 @@ func (h *handler) NewDeckHandler() func(c *gin.Context) {
 		c.JSON(http.StatusCreated, gin.H{
 			"deck_id":   newDeck.GetID(),
 			"shuffled":  newDeck.IsShuffled(),
-			"remaining": newDeck.CardsRemaining(),
+			"remaining": newDeck.CardsRemainingCount(),
 		})
 	}
 }
 
 func (h *handler) OpenDeckHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Deck not available",
+		deckID := c.Param("id")
+
+		deck := h.dealer.GetDeck(deckID)
+		if deck == nil {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "Deck not available",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"deck_id":   deck.GetID(),
+			"shuffled":  deck.IsShuffled(),
+			"remaining": deck.CardsRemainingCount(),
+			"cards":     domain.PresentPokerDeck(deck),
 		})
 	}
 }
